@@ -1,0 +1,44 @@
+<script>
+const gallery = document.getElementById("gallery");
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modal-img");
+
+let currentIndex = 0;
+let images = [];
+
+fetch("images.json")
+  .then(res => res.json())
+  .then(data => {
+    images = data;
+
+    images.forEach((src, index) => {
+      const img = document.createElement("img");
+      img.src = "images/" + src;
+      img.className = "gallery-img";
+
+      img.onclick = () => openModal(index);
+
+      gallery.appendChild(img);
+    });
+  });
+
+function openModal(index) {
+  currentIndex = index;
+  modal.style.display = "flex";
+  modalImg.src = "images/" + images[index];
+}
+
+function closeModal() {
+  modal.style.display = "none";
+}
+
+function nextImage() {
+  currentIndex = (currentIndex + 1) % images.length;
+  modalImg.src = "images/" + images[currentIndex];
+}
+
+function prevImage() {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  modalImg.src = "images/" + images[currentIndex];
+}
+</script>
